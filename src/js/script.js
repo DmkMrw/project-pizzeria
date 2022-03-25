@@ -54,9 +54,6 @@
 
   const app = {
     initMenu: function () {
-      // const testProduct = new Product();
-      // console.log('testProduct:', testProduct);
-      // console.log('thisApp.data:', thisApp.data);
       const thisApp = this;
       for (let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData]);
@@ -114,21 +111,16 @@
 
       const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
       console.log(clickableTrigger);
-      // const allClickableTrigger = document.querySelectorAll(select.menuProduct.clickable);
-      // for (let clickableTrigger of allClickableTrigger) {
-      //   console.log(clickableTrigger);
-      // }
-
 
       /* START: add event listener to clickable trigger on event click */
       clickableTrigger.addEventListener('click', function(event) {
         /* prevent default action for event */
         event.preventDefault();
         /* find active product (product that has active class) */
-        const activeProduct = document.querySelector(classNames.menuProduct.wrapperActive);
+        const activeProduct = document.querySelector(select.all.menuProductsActive); //'.active'
         console.log(activeProduct);
         /* if there is active product and it's not thisProduct.element, remove class active from it */
-        if (activeProduct == thisProduct.element) {
+        if (activeProduct && (activeProduct != thisProduct.element)) {
           activeProduct.classList.remove('active')
         }
         /* toggle active class on thisProduct.element */
