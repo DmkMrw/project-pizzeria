@@ -174,7 +174,7 @@
 
       // set price to default price
       let price = thisProduct.data.price;
-      console.log(price);
+      // console.log(price);
 
       // for every category (param)...
       for(let paramId in thisProduct.data.params) {
@@ -186,17 +186,18 @@
         for(let optionId in param.options) {
           // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
           const option = param.options[optionId];
-          if (formData[paramId] && formData[paramId].includes(optionId)) {
-            if (option.default != true) {
-              price += option.price;
-              console.log('dodane');
-            } else {
-              if (option.default == true) {
-                price += option.price;
+					if (formData[paramId] && formData[paramId].includes(optionId)) {
+						if (!option.default) {
+							price += option.price;
+							console.log('dodane');
+						}
+					}
+						else {
+							if (option.default == true) {
+                price -= option.price;
                 console.log('odjete');
               }
-            }
-          }
+						}
         }
       }
       // update calculated price in the HTML
