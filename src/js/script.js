@@ -33,20 +33,20 @@
     },
   };
 
-  const classNames = {
-    menuProduct: {
-      wrapperActive: 'active',
-      imageVisible: 'active',
-    },
-  };
+  // const classNames = {
+  //   menuProduct: {
+  //     wrapperActive: 'active',
+  //     imageVisible: 'active',
+  //   },
+  // };
 
-  const settings = {
-    amountWidget: {
-      defaultValue: 1,
-      defaultMin: 1,
-      defaultMax: 9,
-    }
-  };
+  // const settings = {
+  //   amountWidget: {
+  //     defaultValue: 1,
+  //     defaultMin: 1,
+  //     defaultMax: 9,
+  //   }
+  // };
 
   const templates = {
     menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
@@ -115,6 +115,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
     }
 
     initAccordion(){
@@ -134,7 +135,6 @@
         event.preventDefault();
         /* find active product (product that has active class) */
         const activeProduct = document.querySelector(select.all.menuProductsActive); //'.active'
-        console.log(activeProduct);
         /* if there is active product and it's not thisProduct.element, remove class active from it */
         if (activeProduct && (activeProduct != thisProduct.element)) {
           activeProduct.classList.remove('active');
@@ -186,21 +186,44 @@
         for(let optionId in param.options) {
           // determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true }
           const option = param.options[optionId];
-					if (formData[paramId] && formData[paramId].includes(optionId)) {
-						if (!option.default) {
-							price += option.price;
-							console.log('dodane');
-						}
-					}
-						else {
-							if (option.default == true) {
-                price -= option.price;
-                console.log('odjete');
-              }
-						}
+          if (formData[paramId] && formData[paramId].includes(optionId)) {
+            if (!option.default) {
+              price += option.price;
+            }
+          }
+          else {
+            if (option.default == true) {
+              price -= option.price;
+            }
+          }
+
+
+          const optionImage = thisProduct.imageWrapper.querySelector(`.${paramId}-${optionId}`);
+
+          if (formData[paramId] && formData[paramId].includes(optionId)) {
+            if (option.default == true && optionImage != null) {
+            optionImage.classList.add('active');
+            }
+          } else {
+            if (option.default == true && optionImage != null) {
+              optionImage.classList.remove('active');
+            } else if (!option.default && optionImage != null) {
+              console.log(optionImage);
+            }
+          }
+          if (formData[paramId] && formData[paramId].includes(optionId)) {
+            if (!option.default && optionImage != null) {
+            optionImage.classList.add('active');
+            }
+          } else {
+            if (!option.default && optionImage != null) {
+              optionImage.classList.remove('active');
+            } else if (!option.default && optionImage != null) {
+              console.log(optionImage);
+            }
+          }
         }
       }
-      // update calculated price in the HTML
       thisProduct.priceElem.innerHTML = price;
     }
   }
