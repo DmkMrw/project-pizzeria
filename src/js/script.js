@@ -1,53 +1,53 @@
 /* global Handlebars, utils, dataSource */ // eslint-disable-line no-unused-vars
 
 {
-  ("use strict");
+  'use strict';
 
   const select = {
     templateOf: {
-      menuProduct: "#template-menu-product",
-      cartProduct: "#template-cart-product",
+      menuProduct: '#template-menu-product',
+      cartProduct: '#template-cart-product',
     },
     containerOf: {
-      menu: "#product-list",
-      cart: "#cart",
+      menu: '#product-list',
+      cart: '#cart',
     },
     all: {
-      menuProducts: "#product-list > .product",
-      menuProductsActive: "#product-list > .product.active",
-      formInputs: "input, select",
+      menuProducts: '#product-list > .product',
+      menuProductsActive: '#product-list > .product.active',
+      formInputs: 'input, select',
     },
     menuProduct: {
-      clickable: ".product__header",
-      form: ".product__order",
-      priceElem: ".product__total-price .price",
-      imageWrapper: ".product__images",
-      amountWidget: ".widget-amount",
+      clickable: '.product__header',
+      form: '.product__order',
+      priceElem: '.product__total-price .price',
+      imageWrapper: '.product__images',
+      amountWidget: '.widget-amount',
       cartButton: '[href="#add-to-cart"]',
     },
     widgets: {
       amount: {
-        input: "input.amount",
+        input: 'input.amount',
         linkDecrease: 'a[href="#less"]',
         linkIncrease: 'a[href="#more"]',
       },
     },
     cart: {
-      productList: ".cart__order-summary",
-      toggleTrigger: ".cart__summary",
+      productList: '.cart__order-summary',
+      toggleTrigger: '.cart__summary',
       totalNumber: `.cart__total-number`,
       totalPrice:
-        ".cart__total-price strong, .cart__order-total .cart__order-price-sum strong",
-      subtotalPrice: ".cart__order-subtotal .cart__order-price-sum strong",
-      deliveryFee: ".cart__order-delivery .cart__order-price-sum strong",
-      form: ".cart__order",
+        '.cart__total-price strong, .cart__order-total .cart__order-price-sum strong',
+      subtotalPrice: '.cart__order-subtotal .cart__order-price-sum strong',
+      deliveryFee: '.cart__order-delivery .cart__order-price-sum strong',
+      form: '.cart__order',
       formSubmit: '.cart__order [type="submit"]',
       phone: '[name="phone"]',
       address: '[name="address"]',
     },
     cartProduct: {
-      amountWidget: ".widget-amount",
-      price: ".cart__product-price",
+      amountWidget: '.widget-amount',
+      price: '.cart__product-price',
       edit: '[href="#edit"]',
       remove: '[href="#remove"]',
     },
@@ -55,11 +55,11 @@
 
   const classNames = {
     menuProduct: {
-      wrapperActive: "active",
-      imageVisible: "active",
+      wrapperActive: 'active',
+      imageVisible: 'active',
     },
     cart: {
-      wrapperActive: "active",
+      wrapperActive: 'active',
     },
   };
 
@@ -85,7 +85,7 @@
       thisCart.products = [];
       thisCart.getElements(element);
       thisCart.initActions(element);
-      console.log("new cart", thisCart);
+      console.log('new cart', thisCart);
     }
 
     getElements(element) {
@@ -102,7 +102,7 @@
       thisCart.dom.toggleTrigger.addEventListener('click', function () {
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
         console.log(thisCart.dom.wrapper);
-      })
+      });
     }
   }
 
@@ -199,12 +199,12 @@
     initActions() {
       const thisWidget = this;
 
-      thisWidget.input.addEventListener("change", function () {
+      thisWidget.input.addEventListener('change', function () {
         thisWidget.setValue(thisWidget.value);
         thisWidget.annouance();
       });
 
-      thisWidget.linkDecrease.addEventListener("click", function (event) {
+      thisWidget.linkDecrease.addEventListener('click', function (event) {
         event.preventDefault();
         // if (thisWidget.value >= settings.amountWidget.defaultMin) {
         thisWidget.setValue((thisWidget.value -= 1));
@@ -212,7 +212,7 @@
         // }
       });
 
-      thisWidget.linkIncrease.addEventListener("click", function (event) {
+      thisWidget.linkIncrease.addEventListener('click', function (event) {
         event.preventDefault();
         // if (thisWidget.value <= settings.amountWidget.defaultMax) {
         thisWidget.setValue((thisWidget.value += 1));
@@ -224,9 +224,9 @@
     annouance() {
       const thisWidget = this;
 
-      const event = new Event("updated");
+      const event = new Event('updated');
       thisWidget.element.dispatchEvent(event);
-      console.log("annouance - ok");
+      console.log('annouance - ok');
     }
   }
 
@@ -281,7 +281,7 @@
       // console.log(clickableTrigger);
 
       /* START: add event listener to clickable trigger on event click */
-      thisProduct.accordionTrigger.addEventListener("click", function (event) {
+      thisProduct.accordionTrigger.addEventListener('click', function (event) {
         // clickableTrigger.addEventListener('click', function (event)
 
         /* prevent default action for event */
@@ -292,28 +292,28 @@
         ); //'.active'
         /* if there is active product and it's not thisProduct.element, remove class active from it */
         if (activeProduct && activeProduct != thisProduct.element) {
-          activeProduct.classList.remove("active");
+          activeProduct.classList.remove('active');
         }
         /* toggle active class on thisProduct.element */
-        thisProduct.element.classList.toggle("active");
+        thisProduct.element.classList.toggle('active');
       });
     }
 
     initOrderFrom() {
       const thisProduct = this;
 
-      thisProduct.form.addEventListener("submit", function (event) {
+      thisProduct.form.addEventListener('submit', function (event) {
         event.preventDefault();
         thisProduct.processOrder();
       });
 
       for (let input of thisProduct.formInputs) {
-        input.addEventListener("change", function () {
+        input.addEventListener('change', function () {
           thisProduct.processOrder();
         });
       }
 
-      thisProduct.cartButton.addEventListener("click", function (event) {
+      thisProduct.cartButton.addEventListener('click', function (event) {
         event.preventDefault();
         thisProduct.processOrder();
       });
@@ -356,20 +356,20 @@
 
           if (formData[paramId] && formData[paramId].includes(optionId)) {
             if (option.default == true && optionImage != null) {
-              optionImage.classList.add("active");
+              optionImage.classList.add('active');
             }
           } else {
             if (option.default == true && optionImage != null) {
-              optionImage.classList.remove("active");
+              optionImage.classList.remove('active');
             }
           }
           if (formData[paramId] && formData[paramId].includes(optionId)) {
             if (!option.default && optionImage != null) {
-              optionImage.classList.add("active");
+              optionImage.classList.add('active');
             }
           } else {
             if (!option.default && optionImage != null) {
-              optionImage.classList.remove("active");
+              optionImage.classList.remove('active');
             } else if (!option.default && optionImage != null) {
               console.log(optionImage);
             }
@@ -385,8 +385,8 @@
       const thisProduct = this;
 
       thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
-      thisProduct.amountWidgetElem.addEventListener("updated", function () {
-        console.log("fn innitAmountWidget");
+      thisProduct.amountWidgetElem.addEventListener('updated', function () {
+        console.log('fn innitAmountWidget');
         thisProduct.processOrder();
       });
     }
