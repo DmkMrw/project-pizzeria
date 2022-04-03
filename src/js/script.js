@@ -115,11 +115,12 @@
       const generatedDOM = utils.createDOMFromHTML(generatedHTML);
 
       /* find menu container */
-      const menuContainer = document.querySelector(select.containerOf.menu);
+      // const menuContainer = document.querySelector(select.containerOf.menu);
+
 
       /* add element to menu */
 
-      menuContainer.appendChild(thisProduct.element);
+      thisCart.dom.productList.appendChild(generatedDOM);
     }
   }
 
@@ -394,11 +395,11 @@
           }
         }
       }
-      price *= thisProduct.amountWidget.value;
+      // price *= thisProduct.amountWidget.value;
       // console.log(thisProduct.amountWidget.value);
       thisProduct.priceSingle = price;
       // console.log(thisProduct.priceSingle);
-      thisProduct.priceElem.innerHTML = price;
+      thisProduct.priceElem.innerHTML = price * thisProduct.amountWidget.value;
     }
 
     initAmountWidget() {
@@ -419,16 +420,16 @@
     prepareCartProduct() {
       const thisProduct = this;
       const params = thisProduct.prepareCartProductParams();
-      console.log(params);
 
       const productSummary = {
         id: thisProduct.id,
         name: thisProduct.data.name,
         amount: thisProduct.amountWidget.value,
-        priceSingle : thisProduct.priceSingle,
+        priceSingle: thisProduct.priceSingle,
         price: thisProduct.priceSingle * thisProduct.amountWidget.value,
         params: this.prepareCartProductParams()
       };
+      console.log(productSummary);
 
       return productSummary;
     }
@@ -436,17 +437,17 @@
     prepareCartProductParams() {
       const thisProduct = this;
       const formData = utils.serializeFormToObject(thisProduct.form);
-      const params = {}
+      const params = {};
 
       for (let paramId in thisProduct.data.params) {
 
         const param = thisProduct.data.params[paramId];
-        console.log(param);
+        // console.log(param);
         params[paramId] = {
           label: param.label,
           options: {}
-        }
-        console.log(params[paramId]);
+        };
+        // console.log(params[paramId]);
 
         for (let optionId in param.options) {
           const option = param.options[optionId];
@@ -456,8 +457,8 @@
           }
         }
       }
-      console.log(params);
-      return params
+      // console.log(params);
+      return params;
     }
   }
 
