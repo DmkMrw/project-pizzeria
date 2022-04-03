@@ -114,14 +114,56 @@
       /* create element using utils.createElementFromHTMl */
       const generatedDOM = utils.createDOMFromHTML(generatedHTML);
 
-      /* find menu container */
-      // const menuContainer = document.querySelector(select.containerOf.menu);
-
-
       /* add element to menu */
-
       thisCart.dom.productList.appendChild(generatedDOM);
+
+      thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
+      console.log('thisCart.product', thisCart.products);
     }
+  }
+
+  class CartProduct{
+    constructor(menuProduct, element) {
+      const thisCartProduct = this;
+
+      thisCartProduct.id = menuProduct.id;
+      thisCartProduct.name = menuProduct.name;
+      thisCartProduct.amount = menuProduct.amount;
+      thisCartProduct.priceSingle = menuProduct.priceSingle,
+      thisCartProduct.price = menuProduct.price,
+      thisCartProduct.params = menuProduct.params,
+
+      this.getElements(element)
+      console.log('thisCartProduct', thisCartProduct);
+
+      thisCartProduct.initAmountWidget();
+    };
+
+    getElements(element) {
+      const thisCartProduct = this;
+      thisCartProduct.dom = {
+        amountWidget: document.querySelector(select.cartProduct.amountWidget),
+        price: document.querySelector(select.cartProduct.price),
+        edit: document.querySelector(select.cartProduct.edit),
+        remove: document.querySelector(select.cartProduct.remove)
+      };
+      thisCartProduct.dom.wrapper = element;
+    };
+
+    initAmountWidget() {
+      const thisCartProduct = this;
+
+      thisCartProduct.amount = new AmountWidget(document.querySelector(select.cartProduct.amountWidget));
+      thisCartProduct.dom.amountWidget.addEventListener('updated', function (event) {
+
+        thisCartProduct.amount = thisCartProduct.dom.amountWidget;
+
+        thisCartProduct.price = thisCartProduct.dom.price;
+
+        thisCartProduct.price = thisCartProduct.amountWidget * thisCartProduct.priceSingle;
+      });
+    }
+
   }
 
   const app = {
@@ -429,7 +471,6 @@
         price: thisProduct.priceSingle * thisProduct.amountWidget.value,
         params: this.prepareCartProductParams()
       };
-      console.log(productSummary);
 
       return productSummary;
     }
