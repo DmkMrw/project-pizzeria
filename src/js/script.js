@@ -114,21 +114,25 @@
 
       thisCart.dom.productList.addEventListener('remove', function (event) {
         thisCart.remove(event.detail.cartProduct);
-      })
+        console.log(event.detail.cartProduct);
+        thisCart.update();
+      });
     }
 
-    remove(element){
-    const thisCart = this;
+    remove(cartProduct){
+      const thisCart = this;
 
-    const productIndex = thisCart.products.indexOf(element);
+      const productIndex = thisCart.products.indexOf(cartProduct);
+      console.log(thisCart.products);
+      console.log(productIndex);
 
 
-    thisCart.products.splice(productIndex, 1);
+      thisCart.products.splice(productIndex, 1);
 
 
-    thisCart.update();
+      thisCart.update();
 
-  }
+    }
 
     add(menuProduct) {
       const thisCart = this;
@@ -160,8 +164,8 @@
         totalNumber += product.amount;
         subtotalPrice += product.price;
 
-        console.log(product.amount);
-        console.log(thisCart.products);
+        // console.log(product.amount);
+        // console.log(thisCart.products);
       }
 
       if(totalNumber <= 0){
@@ -170,16 +174,16 @@
 
       thisCart.totalPrice = subtotalPrice + deliveryFee;
 
-      console.log(totalNumber);
+      // console.log(totalNumber);
 
       thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
       thisCart.dom.deliveryFee.innerHTML = deliveryFee;
       thisCart.dom.totalPrice.innerHTML = thisCart.totalPrice;
+      thisCart.dom.totalNumber.innerHTML = totalNumber;
 
       for ( let oneElement of thisCart.dom.totalPrice) {
         oneElement.innerHTML = thisCart.totalPrice;
       }
-      thisCart.dom.totalNumber.innerHTML = totalNumber;
     }
   }
 
@@ -250,12 +254,11 @@
       const thisCartProduct = this;
       thisCartProduct.dom.edit.addEventListener('click', function (event) {
         event.preventDefault();
-      })
+      });
       thisCartProduct.dom.remove.addEventListener('click', function (event) {
         event.preventDefault();
         thisCartProduct.remove();
-        console.log('ok');
-      })
+      });
     }
 
   }
