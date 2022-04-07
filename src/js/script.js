@@ -103,6 +103,9 @@
       thisCart.dom.subtotalPrice = thisCart.dom.wrapper.querySelector(select.cart.subtotalPrice);
       thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelectorAll(select.cart.totalPrice);
       thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
+      thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
+      thisCart.dom.address = thisCart.dom.wrapper.querySelector(select.cart.address);
+      thisCart.dom.phone = thisCart.dom.wrapper.querySelector(select.cart.phone);
     }
 
     initActions() {
@@ -110,7 +113,6 @@
       // console.log(thisCart.dom.toggleTrigger);
       thisCart.dom.toggleTrigger.addEventListener('click', function () {
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
-        // console.log(thisCart.dom.wrapper);
       });
 
       thisCart.dom.productList.addEventListener('updated', function () {
@@ -119,9 +121,45 @@
 
       thisCart.dom.productList.addEventListener('remove', function (event) {
         thisCart.remove(event.detail.cartProduct);
-        console.log(event.detail.cartProduct);
         thisCart.update();
       });
+
+      thisCart.dom.form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        thisCart.sendOrder();
+      });
+    }
+
+    sendOrder() {
+      const thisCart = this;
+
+      const url = settings.db.url + '/' + settings.db.orders;
+
+      const payload = {
+        address: thisCart.dom.address.value,
+        phone: thisCart.dom.phone.value,
+        totalPrice: thisCart.totalPrice,
+        subtotalPrice: thisCart.subtotalPrice,
+        totalNumber: thisCart.totalNumber,
+        deliveryFee: thisCart.deliveryFee,
+        products: thisCart.products,
+      };
+
+      for (let prod of thisCart.products) {
+        payload.products.push(prod.getData());
+      }
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      };
+
+      fetch(url, options);
+
+
     }
 
     remove(event) {
@@ -161,31 +199,33 @@
     update() {
       const thisCart = this;
 
-      let deliveryFee = settings.cart.defaultDeliveryFee;
+      thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
 
-      let totalNumber = 0;
-      let subtotalPrice = 0;
+      thisCart.totalNumber = 0;
+      thisCart.subtotalPrice = 0;
 
       for (let product of thisCart.products) {
-        totalNumber += product.amount;
-        subtotalPrice += product.price;
+        thisCart.totalNumber += product.amountWidget.value;
+        thisCart.subtotalPrice += product.price;
 
-        // console.log(product.amount);
+        console.log(product.amountWidget.value);
+        // console.log(AmountWidget);
+        // console.log(thisWidget.value);
         // console.log(thisCart.products);
       }
 
-      if(totalNumber <= 0){
-        deliveryFee = 0;
+      if(thisCart.totalNumber <= 0){
+        thisCart.deliveryFee = 0;
       }
 
-      thisCart.totalPrice = subtotalPrice + deliveryFee;
+      thisCart.totalPrice = thisCart.subtotalPrice + thisCart.deliveryFee;
 
       // console.log(totalNumber);
 
-      thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
-      thisCart.dom.deliveryFee.innerHTML = deliveryFee;
+      thisCart.dom.subtotalPrice.innerHTML = thisCart.subtotalPrice;
+      thisCart.dom.deliveryFee.innerHTML = thisCart.deliveryFee;
       thisCart.dom.totalPrice.innerHTML = thisCart.totalPrice;
-      thisCart.dom.totalNumber.innerHTML = totalNumber;
+      thisCart.dom.totalNumber.innerHTML = thisCart.totalNumber;
 
       for ( let oneElement of thisCart.dom.totalPrice) {
         oneElement.innerHTML = thisCart.totalPrice;
@@ -209,6 +249,7 @@
 
       thisCartProduct.initAmountWidget();
       thisCartProduct.initActions();
+
     }
 
     getElements(element) {
@@ -265,6 +306,21 @@
         event.preventDefault();
         thisCartProduct.remove();
       });
+    }
+
+    getData() {
+      const thisCartProduct = this;
+
+      const neededData = {
+        id: thisCartProduct.id,
+        amount: thisCartProduct.amount,
+        price: thisCartProduct.price,
+        priceSingle: thisCartProduct.priceSingle,
+        name: thisCartProduct.name,
+        params: thisCartProduct.params,
+      };
+      console.log(neededData);
+      return neededData;
     }
 
   }
@@ -353,19 +409,19 @@
       /* TODO: Add validation */
       if (thisWidget.value !== newValue && !isNaN(newValue)) {
         thisWidget.value = newValue;
-        thisWidget.annouance();
+        thisWidget.announce();
       }
 
       if (thisWidget.input.value >= settings.amountWidget.defaultMax) {
         thisWidget.value = settings.amountWidget.defaultMax;
         thisWidget.input.value = settings.amountWidget.defaultMax;
-        thisWidget.annouance();
+        thisWidget.announce();
       }
 
       if (thisWidget.input.value < settings.amountWidget.defaultMin) {
         thisWidget.value = 0;
         thisWidget.input.value = 0;
-        thisWidget.annouance();
+        thisWidget.announce();
       }
 
       // console.log(thisWidget.value);
@@ -378,14 +434,14 @@
 
       thisWidget.input.addEventListener('change', function () {
         thisWidget.setValue(thisWidget.value);
-        thisWidget.annouance();
+        thisWidget.announce();
       });
 
       thisWidget.linkDecrease.addEventListener('click', function (event) {
         event.preventDefault();
         // if (thisWidget.value >= settings.amountWidget.defaultMin) {
         thisWidget.setValue((thisWidget.value -= 1));
-        thisWidget.annouance();
+        thisWidget.announce();
         // }
       });
 
@@ -393,12 +449,12 @@
         event.preventDefault();
         // if (thisWidget.value <= settings.amountWidget.defaultMax) {
         thisWidget.setValue((thisWidget.value += 1));
-        thisWidget.annouance();
+        thisWidget.announce();
         // }
       });
     }
 
-    annouance() {
+    announce() {
       const thisWidget = this;
 
       const event = new CustomEvent('updated', {
