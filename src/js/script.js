@@ -142,8 +142,11 @@
         subtotalPrice: thisCart.subtotalPrice,
         totalNumber: thisCart.totalNumber,
         deliveryFee: thisCart.deliveryFee,
-        products: thisCart.products,
+        products: [],
+        // products: thisCart.products
       };
+      console.log('thisProducts', thisCart.products);
+      console.log('thisProducts[]', thisCart.products);
 
       for (let prod of thisCart.products) {
         payload.products.push(prod.getData());
@@ -157,8 +160,13 @@
         body: JSON.stringify(payload),
       };
 
-      fetch(url, options);
-
+      fetch(url, options)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (parsedResponse) {
+          console.log('parsedResponse', parsedResponse);
+        });
 
     }
 
