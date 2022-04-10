@@ -134,7 +134,7 @@
       const thisCart = this;
 
       const url = settings.db.url + '/' + settings.db.orders;
-
+      console.log(thisCart);
       const payload = {
         address: thisCart.dom.address.value,
         phone: thisCart.dom.phone.value,
@@ -143,7 +143,7 @@
         totalNumber: thisCart.totalNumber,
         deliveryFee: thisCart.deliveryFee,
         products: [],
-        // products: thisCart.products
+
       };
       console.log('thisProducts', thisCart.products);
       console.log('thisProducts[]', thisCart.products);
@@ -173,17 +173,14 @@
     remove(event) {
       const thisCart = this;
 
-      for (let product of thisCart.products) {
-        const productIndex = thisCart.products.indexOf(product);
+        const productIndex = thisCart.products.indexOf(event);
 
         thisCart.products.splice(productIndex, 1);
-        console.log('event', event);
+
         let productElement = event.dom.wrapper;
-        console.log('eventdomwrap', event.dom.wrapper);
 
         productElement.remove();
         thisCart.update();
-      }
     }
 
     add(menuProduct) {
@@ -200,7 +197,7 @@
 
       thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
       // console.log('thisCart.product', thisCart.products);
-
+      console.log(thisCart.products);
       thisCart.update();
     }
 
@@ -216,7 +213,7 @@
         thisCart.totalNumber += product.amountWidget.value;
         thisCart.subtotalPrice += product.price;
 
-        console.log(product.amountWidget.value);
+        // console.log(product.amountWidget.value);
         // console.log(AmountWidget);
         // console.log(thisWidget.value);
         // console.log(thisCart.products);
@@ -353,14 +350,11 @@
           return rawResponse.json();
         })
         .then(function (parsedResponse) {
-          console.log('parsedResponse', parsedResponse);
 
           thisApp.data.products = parsedResponse;
 
           thisApp.initMenu();
         });
-
-      console.log('thisApp.data', JSON.stringify(thisApp.data));
     },
 
     init: function () {
