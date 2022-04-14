@@ -115,13 +115,11 @@ class Cart {
 
     thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
     // console.log('thisCart.product', thisCart.products);
-    console.log(thisCart.products);
     thisCart.update();
   }
 
   update() {
     const thisCart = this;
-
     thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
 
     thisCart.totalNumber = 0;
