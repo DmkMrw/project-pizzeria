@@ -4,6 +4,7 @@ import AmountWidget from './AmountWidget.js';
 
 class Booking {
   constructor(element) {
+    // console.log('element', element);
     this.render(element);
     this.initWidgets();
   }
