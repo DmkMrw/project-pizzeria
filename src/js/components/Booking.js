@@ -192,7 +192,7 @@ class Booking {
     this.datePickerElem = new DatePicker(this.dom.datePicker);
     this.hourPickerElem = new HourPicker(this.dom.hourPicker);
 
-    this.dom.wrapper.addEventListener('updated', function(){
+    this.dom.wrapper.addEventListener('updated', () => {
       this.updateDOM();
     });
 
@@ -255,7 +255,7 @@ class Booking {
           }
 
         } else {
-          console.log('table unavailable');
+          alert('Stolik niedostępny');
         }
       }
     });
