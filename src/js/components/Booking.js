@@ -193,6 +193,7 @@ class Booking {
     this.hourPickerElem = new HourPicker(this.dom.hourPicker);
 
     this.dom.wrapper.addEventListener('updated', () => {
+
       this.updateDOM();
     });
 

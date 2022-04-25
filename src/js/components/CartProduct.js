@@ -4,7 +4,6 @@ import AmountWidget from './AmountWidget.js';
 class CartProduct{
   constructor(menuProduct, element) {
     const thisCartProduct = this;
-    console.log(menuProduct);
     thisCartProduct.id = menuProduct.id;
     thisCartProduct.name = menuProduct.name;
     thisCartProduct.amount = menuProduct.amount;
@@ -61,7 +60,7 @@ class CartProduct{
     });
 
     thisCartProduct.dom.wrapper.dispatchEvent(event);
-    console.log('remove');
+    // console.log('remove');
   }
 
   initActions() {
@@ -87,7 +86,7 @@ class CartProduct{
       name: thisCartProduct.name,
       params: thisCartProduct.params,
     };
-    console.log(neededData);
+
     return neededData;
   }
 

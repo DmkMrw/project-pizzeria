@@ -52,7 +52,7 @@ class Cart {
     const thisCart = this;
 
     const url = settings.db.url + '/' + settings.db.order;
-    console.log(thisCart);
+
     const payload = {
       address: thisCart.dom.address.value,
       phone: thisCart.dom.phone.value,
@@ -63,8 +63,6 @@ class Cart {
       products: [],
 
     };
-    console.log('thisProducts', thisCart.products);
-    console.log('thisProducts[]', thisCart.products);
 
     for (let prod of thisCart.products) {
       payload.products.push(prod.getData());
@@ -83,7 +81,6 @@ class Cart {
         return response.json();
       })
       .then(function (parsedResponse) {
-        console.log('parsedResponse', parsedResponse);
       });
 
   }
